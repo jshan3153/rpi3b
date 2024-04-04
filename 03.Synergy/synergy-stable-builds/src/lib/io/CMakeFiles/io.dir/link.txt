@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/libio.a  CMakeFiles/io.dir/StreamBuffer.cpp.o CMakeFiles/io.dir/StreamFilter.cpp.o CMakeFiles/io.dir/XIO.cpp.o
+/usr/bin/ranlib ../../../lib/libio.a

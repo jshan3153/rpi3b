@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/usynergy.dir/uSynergyUnix.c.o  -o ../../../bin/usynergy  ../../../lib/libmicro.a 

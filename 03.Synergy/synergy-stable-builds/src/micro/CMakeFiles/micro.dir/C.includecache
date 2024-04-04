@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/micro/uSynergy.c
+uSynergy.h
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/micro/uSynergy.h
+stdio.h
+-
+string.h
+-
+
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/micro/uSynergy.h
+stdint.h
+-
+

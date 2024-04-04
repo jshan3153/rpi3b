@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../lib/libmicro.a  CMakeFiles/micro.dir/uSynergy.c.o
+/usr/bin/ranlib ../../lib/libmicro.a

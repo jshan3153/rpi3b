@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/lib/shared/EditionType.h
+
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/lib/shared/SerialKey.cpp
+SerialKey.h
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/lib/shared/SerialKey.h
+fstream
+-
+iostream
+-
+algorithm
+-
+vector
+-
+climits
+-
+sstream
+-
+iomanip
+-
+stdexcept
+-
+
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/lib/shared/SerialKey.h
+string
+-
+ctime
+-
+EditionType.h
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/lib/shared/EditionType.h
+gtest/gtest_prod.h
+/home/pi/Downloads/afzaalace-synergy-stable-builds-c30301e/src/lib/shared/gtest/gtest_prod.h
+

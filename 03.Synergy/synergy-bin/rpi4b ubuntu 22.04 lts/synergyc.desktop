@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/rpi4b/synergy/bin/synergyc --name rpi4b 192.168.0.56
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=synergyc
+Name=synergyc
+Comment[en_US]=synergy client
+Comment=synergy client
