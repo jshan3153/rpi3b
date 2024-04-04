@@ -27,6 +27,10 @@ rled = 0
 gled = 0
 bled = 0
 
+gpslist = []    #GPS 수신데이터를 담기 위한 리스트 선언
+listcnt = 0     #리스트에 삽입된 
+pushenable = 1  # 리스트를 보낼 때 푸시하는 경우가  충돌을 피하기 위해 구분 용도
+
 def GPS_Info():
     global NMEA_buff
     global lat_in_degrees
@@ -62,14 +66,37 @@ def GPS_Info():
     #print(nmea_time, txtime)
     
     txlat = nmea_latitude.replace('.','')
+    txlat = '+' + txlat
+    txlat = txlat.ljust(10, '0')    #프로토콜 자리수 맞추기 위해 나머지 0으로 채움
     #print(nmea_latitude, txlat)
 
     txlon = nmea_longitude.replace('.','')
+    txlon = '+' + txlon
+    txlon = txlon.ljust(11,'0')     #프로토콜 자리수 맞추기 위해 나머지 0으로 채움
     #print(nmea_longitude, txlon)
     #payload = "8931440400065254618626990010010002000005000120000#"+txtime+txlat+txlon+"20#"
-    txready = 1
+    #txready = 1
     #print(payload)
+    if pushenable:
+        push_gps(txtime, txlat, txlon)
 
+def push_gps(time, lat, lon):
+    global listcnt, txready
+    #timelatlon = "{0}{1}{2}".format(time, lat, lon)
+    #timelatlon = time+lat+lon
+    timelatlon = "%s%s%s"%(time,lat,lon)
+    
+    print(timelatlon)
+    gpslist.insert(listcnt, timelatlon)
+    listcnt+=1
+    print(gpslist)
+    
+    txready = 1
+    
+    print("listcnt %d, txready %d" % (listcnt,txready))
+    
+    #send_to_server1()
+    
 #convert raw NMEA string into degree decimal format   
 def convert_to_degrees(raw_value):
     decimal_value = raw_value/100.00
@@ -85,10 +112,11 @@ def send_to_server():
     global txtime
     global txlat
     global txlon
-    global boot_flag
+    global boot_flag, pushenable, listcnt
+    
     usim = "89314404000652546186" #"89314404000476684577"
     
-    timer=threading.Timer(5, send_to_server)
+    timer=threading.Timer(20, send_to_server)
     timer.start()
 
     if network_flag:
@@ -99,9 +127,27 @@ def send_to_server():
         }
         
         if txready == 1:
-            payload = usim + "26990010010304"+str(boot_flag)+"00000800251000#"+txtime+'+'+txlat+'+'+txlon+"20#"
+            #payload = usim + "26990010010304"+str(boot_flag)+"00000800251000#"+txtime+'+'+txlat+'+'+txlon+"20#"
+                        
+            payload = usim + "26990010010304"+str(boot_flag)+"00000800251000#"
+            
+            if listcnt>0 and pushenable == 1:
+                pushenable = 0
+                
+            #리스트에 들어 있는 만큼 전송
+            for n in range (0,listcnt):
+                payload += gpslist.pop(0)
+                payload += "20"
+                
+                # 마지막 데이터는 콤마를 빼기 위해서
+                if n != listcnt-1:
+                    payload += ','
+            
+            payload += "#"
             #print(payload)
+            listcnt = 0
             txready = 0
+            pushenable = 1
         else:
             payload = usim + "26990010010304"+str(boot_flag)+"00000800251000##"    
             print('tx not ready')
@@ -111,10 +157,12 @@ def send_to_server():
         data = res.read()
         response = data.decode("utf-8")
         print(response)
-        if boot_flag == 0:
-            if response[0] == '2' and response[1] == '0' and response[2] == '0':
+        if response[0:2] == '200': #slicing
+            if boot_flag == 0:
                 boot_flag = 1
-                print("boot complete")
+                print("boot")
+            else:
+                print("report")
     else:
         print("not send")
 
